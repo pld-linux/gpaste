@@ -76,6 +76,29 @@ Requires:	%{name} = %{version}-%{release}
 %description applet
 %{summary}.
 
+%package -n bash-completion-%{name}
+Summary:	Bash completion for GPaste commands
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+Requires:	bash-completion
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description -n bash-completion-%{name}
+Bash completion for GPaste commands.
+
+%package -n zsh-completion-%{name}
+Summary:	zsh completion for GPaste commands
+Group:		Applications/Shells
+Requires:	%{name} = %{version}-%{release}
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description -n zsh-completion-%{name}
+zsh completion for GPaste commands.
+
 %prep
 %setup -q
 
@@ -99,9 +122,9 @@ rm $RPM_BUILD_ROOT%{_libdir}/*.la
 
 # Install bash/zsh completion support
 install -d $RPM_BUILD_ROOT%{_datadir}/bash-completion/completions
-install -pm 0644 data/completions/%{name} -t $RPM_BUILD_ROOT%{_datadir}/bash-completion/completions
+cp -p data/completions/%{name} $RPM_BUILD_ROOT%{_datadir}/bash-completion/completions
 install -d $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
-install -pm 0644 data/completions/_%{name} -t $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
+cp -p data/completions/_%{name} $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
 
 %find_lang %{alt_name}
 
@@ -190,3 +213,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gnome-shell-extension-%{name}
 %defattr(644,root,root,755)
 %{_datadir}/gnome-shell/extensions/GPaste@gnome-shell-extensions.gnome.org
+
+%files -n bash-completion-%{name}
+%defattr(644,root,root,755)
+%{_datadir}/bash-completion/completions/%{name}
+
+%files -n zsh-completion-%{name}
+%defattr(644,root,root,755)
+%{_datadir}/zsh/site-functions/_%{name}
