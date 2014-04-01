@@ -7,17 +7,18 @@ Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
 # Source0-md5:	c07c89d14925508fde98eac4b069324f
 URL:		https://github.com/Keruspe/GPaste
-BuildRequires:	appdata-tools
 BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2-devel
+BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-control-center-devel
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+3-devel
 BuildRequires:	intltool
 BuildRequires:	pango-devel
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.583
 BuildRequires:	systemd-units
 BuildRequires:	tar >= 1:1.22
