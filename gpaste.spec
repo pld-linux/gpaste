@@ -11,7 +11,7 @@ BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2-devel
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-control-center-devel
 BuildRequires:	gobject-introspection-devel
