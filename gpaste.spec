@@ -1,11 +1,11 @@
 Summary:	Clipboard management system
 Name:		gpaste
-Version:	3.14
-Release:	2
+Version:	3.14.2
+Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	a79dd9b38ffdc50199c55ef4f8ddf9e0
+# Source0-md5:	9f88556b7a3101007db93839861367e7
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
@@ -103,11 +103,11 @@ zsh completion for GPaste commands.
 %build
 [ -f configure ] || NOCONFIGURE=1 ./autogen.sh
 %configure \
-  --disable-schemas-compile \
-  --disable-silent-rules \
-  --disable-unity \
-  --enable-applet \
-  --enable-vala
+	--disable-schemas-compile \
+	--disable-silent-rules \
+	--disable-unity \
+	--enable-applet \
+	--enable-vala
 %{__make}
 
 %install
