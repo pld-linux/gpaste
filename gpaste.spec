@@ -1,7 +1,7 @@
 Summary:	Clipboard management system
 Name:		gpaste
 Version:	3.14.2
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
