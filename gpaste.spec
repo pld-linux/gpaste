@@ -1,21 +1,22 @@
 Summary:	Clipboard management system
 Name:		gpaste
-Version:	3.14.2
-Release:	2
+Version:	3.16.1
+Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	9f88556b7a3101007db93839861367e7
+# Source0-md5:	2d5a33317950dbecb84d3704a1c2a780
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel
+BuildRequires:	glib2-devel >= 1:2.44
 BuildRequires:	gnome-control-center-devel
+BuildRequires:	gnome-shell-devel >= 3.16
 BuildRequires:	gobject-introspection-devel
-BuildRequires:	gtk+3-devel
+BuildRequires:	gtk+3-devel >= 3.16
 BuildRequires:	intltool
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
@@ -28,6 +29,7 @@ BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xz
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2 >= 1:2.26.0
+Suggests:	wgetpaste >= 2.26
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		alt_name	GPaste
@@ -145,14 +147,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING NEWS README.md THANKS TODO
 %attr(755,root,root) %{_bindir}/%{name}
-%{_mandir}/man1/%{name}.1.*
+%{_mandir}/man1/%{name}.1*
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/gpaste-daemon
 %attr(755,root,root) %{_libdir}/%{name}/gpaste-settings
-%attr(755,root,root) %{_libdir}/%{name}/gpasted
 %{_datadir}/appdata/org.gnome.GPaste.Settings.appdata.xml
 %{_desktopdir}/org.gnome.GPaste.Settings.desktop
-%{_datadir}/dbus-1/services/org.gnome.GPaste.Applet.service
 %{_datadir}/dbus-1/services/org.gnome.GPaste.Settings.service
 %{_datadir}/dbus-1/services/org.gnome.GPaste.service
 %{_datadir}/glib-2.0/schemas/org.gnome.GPaste.gschema.xml
@@ -161,7 +161,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgpaste.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.2
+%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.3
 %{_libdir}/girepository-1.0/GPaste-1.0.typelib
 
 %files devel
@@ -173,12 +173,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libgpaste.so
 %{_pkgconfigdir}/gpaste-1.0.pc
 
+
 %files applet
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/%{name}-applet
-%{_mandir}/man1/%{name}-applet.1.*
+%attr(755,root,root) %{_libdir}/%{name}/%{name}-ui
 %{_datadir}/appdata/org.gnome.GPaste.Applet.appdata.xml
+%{_datadir}/appdata/org.gnome.GPaste.Ui.appdata.xml
+%{_datadir}/dbus-1/services/org.gnome.GPaste.Applet.service
+%{_datadir}/dbus-1/services/org.gnome.GPaste.Ui.service
 %{_desktopdir}/org.gnome.GPaste.Applet.desktop
+%{_desktopdir}/org.gnome.GPaste.Ui.desktop
 /etc/xdg/autostart/org.gnome.GPaste.Applet.desktop
 
 %files -n gnome-shell-extension-%{name}
