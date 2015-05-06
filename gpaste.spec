@@ -14,14 +14,12 @@ BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.44
 BuildRequires:	gnome-control-center-devel
-BuildRequires:	gnome-shell-devel >= 3.16
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+3-devel >= 3.16
 BuildRequires:	intltool
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
-BuildRequires:	systemd-units
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala
 BuildRequires:	xorg-lib-libX11-devel
