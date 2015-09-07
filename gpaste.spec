@@ -1,11 +1,11 @@
 Summary:	Clipboard management system
 Name:		gpaste
-Version:	3.16.1
+Version:	3.16.3
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	2d5a33317950dbecb84d3704a1c2a780
+# Source0-md5:	b223cab133a1f807aaa69addbb796b76
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
