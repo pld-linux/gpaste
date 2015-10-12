@@ -1,18 +1,18 @@
 Summary:	Clipboard management system
 Name:		gpaste
-Version:	3.16.3
+Version:	3.18.1.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	b223cab133a1f807aaa69addbb796b76
+# Source0-md5:	2aecbfadd0eac44e2e67e0e8640e1330
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	clutter-devel
 BuildRequires:	dbus-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2-devel
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 1:2.44
+BuildRequires:	glib2-devel >= 1:2.46
 BuildRequires:	gnome-control-center-devel
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+3-devel >= 3.16
@@ -21,7 +21,7 @@ BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	vala
+BuildRequires:	vala >= 2:0.30
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xz
@@ -119,13 +119,13 @@ rm $RPM_BUILD_ROOT%{_libdir}/*.la
 
 # Install bash/zsh completion support
 install -d $RPM_BUILD_ROOT%{bash_compdir}
-cp -p data/completions/%{name} $RPM_BUILD_ROOT%{bash_compdir}
+cp -p data/completions/gpaste-client $RPM_BUILD_ROOT%{bash_compdir}
 install -d $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
-cp -p data/completions/_%{name} $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
+cp -p data/completions/_gpaste-client $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
 
 %find_lang %{alt_name}
 
-desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/org.gnome.GPaste.Settings.desktop
+desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/org.gnome.GPaste.Ui.desktop
 desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/org.gnome.GPaste.Applet.desktop
 desktop-file-validate $RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/org.gnome.GPaste.Applet.desktop
 
@@ -144,14 +144,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{alt_name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING NEWS README.md THANKS TODO
-%attr(755,root,root) %{_bindir}/%{name}
-%{_mandir}/man1/%{name}.1*
+%attr(755,root,root) %{_bindir}/gpaste
+%attr(755,root,root) %{_bindir}/gpaste-client
+%{_mandir}/man1/gpaste-client.1*
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/gpaste-daemon
-%attr(755,root,root) %{_libdir}/%{name}/gpaste-settings
-%{_datadir}/appdata/org.gnome.GPaste.Settings.appdata.xml
-%{_desktopdir}/org.gnome.GPaste.Settings.desktop
-%{_datadir}/dbus-1/services/org.gnome.GPaste.Settings.service
 %{_datadir}/dbus-1/services/org.gnome.GPaste.service
 %{_datadir}/glib-2.0/schemas/org.gnome.GPaste.gschema.xml
 %{_datadir}/gnome-control-center/keybindings/*-gpaste.xml
@@ -159,7 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgpaste.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.3
+%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.4
 %{_libdir}/girepository-1.0/GPaste-1.0.typelib
 
 %files devel
@@ -170,7 +167,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/%{name}
 %{_libdir}/libgpaste.so
 %{_pkgconfigdir}/gpaste-1.0.pc
-
 
 %files applet
 %defattr(644,root,root,755)
@@ -187,11 +183,12 @@ rm -rf $RPM_BUILD_ROOT
 %files -n gnome-shell-extension-%{name}
 %defattr(644,root,root,755)
 %{_datadir}/gnome-shell/extensions/GPaste@gnome-shell-extensions.gnome.org
+%{_datadir}/gnome-shell/search-providers/org.gnome.GPaste.search-provider.ini
 
 %files -n bash-completion-%{name}
 %defattr(644,root,root,755)
-%{bash_compdir}/%{name}
+%{bash_compdir}/gpaste-client
 
 %files -n zsh-completion-%{name}
 %defattr(644,root,root,755)
-%{_datadir}/zsh/site-functions/_%{name}
+%{_datadir}/zsh/site-functions/_gpaste-client
