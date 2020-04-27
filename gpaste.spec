@@ -1,39 +1,41 @@
 #
 # Conditional build:
 %bcond_without	gnome_shell	# GNOME Shell extension
-%bcond_with	appindicator	# Unity appindicators support
 #
 Summary:	Clipboard management system
 Summary(pl.UTF-8):	System zarządzania schowkiem
 Name:		gpaste
-Version:	3.22.3
+Version:	3.36.3
 Release:	1
 License:	BSD
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	e8b55d285e1b5f3d5f75edca9935cc15
+# Source0-md5:	3bd71852b7a0fe9a94994698c38c91e6
+Patch0:		%{name}-sh.patch
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	appstream-glib-devel
-BuildRequires:	clutter-devel
+BuildRequires:	autoconf >= 2.69
+BuildRequires:	automake >= 1:1.15
 BuildRequires:	dbus-devel
 BuildRequires:	desktop-file-utils
-BuildRequires:	gdk-pixbuf2-devel >= 2.26.0
+BuildRequires:	gdk-pixbuf2-devel >= 2.38.0
 BuildRequires:	gettext-tools >= 0.19.7
-BuildRequires:	glib2-devel >= 1:2.50
-BuildRequires:	gobject-introspection-devel >= 1.50
-BuildRequires:	gtk+3-devel >= 3.22
-%{?with_appindicator:BuildRequires:	libappindicator-gtk3-devel}
-%{?with_gnome_shell:BuildRequires:	mutter-devel}
+BuildRequires:	gjs-devel >= 1.54.0
+BuildRequires:	glib2-devel >= 1:2.58
+BuildRequires:	gobject-introspection-devel >= 1.58.0
+BuildRequires:	gtk+3-devel >= 3.24
+BuildRequires:	libtool >= 2:2.2.6
+%{?with_gnome_shell:BuildRequires:	mutter-devel >= 3.36}
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.29
 BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	vala >= 2:0.32
+BuildRequires:	vala >= 2:0.42
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xz
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2 >= 1:2.50
+Obsoletes:	gpaste-applet < 3.20
 Suggests:	wgetpaste >= 2.26
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -51,6 +53,9 @@ do modyfikowania ustawień.
 Summary:	Library to manage the clipboard history
 Summary(pl.UTF-8):	Biblioteka do zarządzania historią schowka
 Group:		Libraries
+Requires:	gdk-pixbuf2 >= 2.38.0
+Requires:	glib2 >= 1:2.58
+Requires:	gtk+3 >= 3.24
 
 %description libs
 libgpaste is a library to manage the clipboard history (used by
@@ -65,6 +70,9 @@ Summary:	Development files for libgpaste library
 Summary(pl.UTF-8):	Pliki programistyczne biblioteki libgpaste
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	gdk-pixbuf2-devel >= 2.38.0
+Requires:	glib2-devel >= 1:2.58
+Requires:	gtk+3-devel >= 3.24
 
 %description devel
 This package contains the header files for developing applications
@@ -79,7 +87,7 @@ Summary:	Vala API for libgpaste library
 Summary(pl.UTF-8):	API języka Vala do biblioteki libgpaste
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Requires:	vala >= 2:0.32
+Requires:	vala >= 2:0.42
 
 %description -n vala-gpaste
 Vala API for libgpaste library.
@@ -92,8 +100,8 @@ Summary:	GNOME Shell extension for GPaste
 Summary(pl.UTF-8):	Rozszerzenie powłoki GNOME (GNOME Shell) dla GPaste
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-shell >= 3.14.0
-%if "%{_rpmversion}" >= "5"
+Requires:	gnome-shell >= 3.36
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -103,25 +111,13 @@ GNOME Shell extension for GPaste.
 %description -n gnome-shell-extension-%{name} -l pl.UTF-8
 Rozszerzenie powłoki GNOME (GNOME Shell) dla GPaste.
 
-%package applet
-Summary:	Tray icon to manage GPaste
-Summary(pl.UTF-8):	Ikona tacki do zarządzania GPaste
-Group:		X11/Applications
-Requires:	%{name} = %{version}-%{release}
-
-%description applet
-Tray icon to manage GPaste.
-
-%description applet -l pl.UTF-8
-Ikona tacki do zarządzania GPaste.
-
 %package -n bash-completion-%{name}
 Summary:	Bash completion for GPaste commands
 Summary(pl.UTF-8):	Bashowe dopełnianie parametrów poleceń GPaste
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -136,7 +132,7 @@ Summary:	ZSH completion for GPaste commands
 Summary(pl.UTF-8):	Dopełnianie parametrów ZSH dla poleceń GPaste
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -148,14 +144,18 @@ Dopełnianie parametrów ZSH dla poleceń GPaste.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
 	%{!?with_gnome_shell:--disable-gnome-shell-extension} \
 	--disable-schemas-compile \
 	--disable-silent-rules \
-	--enable-applet \
-	%{?with_appindicator:--enable-unity} \
 	--enable-vala \
 	--with-controlcenterdir=%{_datadir}/gnome-control-center/keybindings \
 	--with-systemduserunitdir=%{systemduserunitdir}
@@ -163,6 +163,7 @@ Dopełnianie parametrów ZSH dla poleceń GPaste.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -177,8 +178,6 @@ cp -p data/completions/_gpaste-client $RPM_BUILD_ROOT%{_datadir}/zsh/site-functi
 %find_lang GPaste
 
 desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/org.gnome.GPaste.Ui.desktop
-desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/org.gnome.GPaste.Applet.desktop
-desktop-file-validate $RPM_BUILD_ROOT%{_sysconfdir}/xdg/autostart/org.gnome.GPaste.Applet.desktop
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -197,44 +196,35 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING ChangeLog NEWS README.md THANKS TODO
 %attr(755,root,root) %{_bindir}/gpaste-client
 %{_mandir}/man1/gpaste-client.1*
-%dir %{_libdir}/%{name}
-%attr(755,root,root) %{_libdir}/%{name}/gpaste-daemon
+%dir %{_libexecdir}/gpaste
+%attr(755,root,root) %{_libexecdir}/gpaste/gpaste-daemon
+%attr(755,root,root) %{_libexecdir}/gpaste/gpaste-ui
 %{systemduserunitdir}/org.gnome.GPaste.service
+%{systemduserunitdir}/org.gnome.GPaste.Ui.service
 %{_datadir}/dbus-1/services/org.gnome.GPaste.service
+%{_datadir}/dbus-1/services/org.gnome.GPaste.Ui.service
 %{_datadir}/glib-2.0/schemas/org.gnome.GPaste.gschema.xml
 %{_datadir}/gnome-control-center/keybindings/*-gpaste.xml
+%{_datadir}/metainfo/org.gnome.GPaste.Ui.appdata.xml
+%{_desktopdir}/org.gnome.GPaste.Ui.desktop
 
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgpaste.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.6
+%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.11
 %{_libdir}/girepository-1.0/GPaste-1.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgpaste.so
 %{_datadir}/gir-1.0/GPaste-1.0.gir
-%{_includedir}/%{name}
+%{_includedir}/gpaste
 %{_pkgconfigdir}/gpaste-1.0.pc
 
 %files -n vala-gpaste
 %defattr(644,root,root,755)
 %{_datadir}/vala/vapi/gpaste-1.0.deps
 %{_datadir}/vala/vapi/gpaste-1.0.vapi
-
-%files applet
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/%{name}-applet
-%attr(755,root,root) %{_libdir}/%{name}/%{name}-ui
-%{systemduserunitdir}/org.gnome.GPaste.Applet.service
-%{systemduserunitdir}/org.gnome.GPaste.Ui.service
-%{_datadir}/appdata/org.gnome.GPaste.Applet.appdata.xml
-%{_datadir}/appdata/org.gnome.GPaste.Ui.appdata.xml
-%{_datadir}/dbus-1/services/org.gnome.GPaste.Applet.service
-%{_datadir}/dbus-1/services/org.gnome.GPaste.Ui.service
-%{_desktopdir}/org.gnome.GPaste.Applet.desktop
-%{_desktopdir}/org.gnome.GPaste.Ui.desktop
-/etc/xdg/autostart/org.gnome.GPaste.Applet.desktop
 
 %files -n gnome-shell-extension-%{name}
 %defattr(644,root,root,755)

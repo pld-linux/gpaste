@@ -1,0 +1,11 @@
+--- gpaste-3.36.3/configure.ac.orig	2020-03-27 10:12:51.000000000 +0100
++++ gpaste-3.36.3/configure.ac	2020-04-26 21:30:19.130268182 +0200
+@@ -72,7 +72,7 @@
+         ;;
+ esac
+ 
+-AC_SUBST([GTK_API], "${with_gtk:0:1}")
++AC_SUBST([GTK_API], "${with_gtk%.*}")
+ 
+ AC_DEFINE([G_PASTE_DEFAULT_HISTORY], ["history"],                                 [The default hsitory name])
+ AC_DEFINE([G_PASTE_ICON_NAME],       ["edit-paste"],                              [The name of the icon used by GPaste])
