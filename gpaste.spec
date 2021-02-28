@@ -101,9 +101,7 @@ Summary(pl.UTF-8):	Rozszerzenie powłoki GNOME (GNOME Shell) dla GPaste
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	gnome-shell >= 3.36
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description -n gnome-shell-extension-%{name}
 GNOME Shell extension for GPaste.
@@ -117,9 +115,7 @@ Summary(pl.UTF-8):	Bashowe dopełnianie parametrów poleceń GPaste
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash-completion >= 2.0
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description -n bash-completion-%{name}
 Bash completion for GPaste commands.
@@ -132,9 +128,7 @@ Summary:	ZSH completion for GPaste commands
 Summary(pl.UTF-8):	Dopełnianie parametrów ZSH dla poleceń GPaste
 Group:		Applications/Shells
 Requires:	%{name} = %{version}-%{release}
-%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
-%endif
 
 %description -n zsh-completion-%{name}
 zsh completion for GPaste commands.
