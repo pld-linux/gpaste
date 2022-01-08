@@ -6,7 +6,7 @@ Summary:	Clipboard management system
 Summary(pl.UTF-8):	System zarządzania schowkiem
 Name:		gpaste
 Version:	3.36.3
-Release:	2
+Release:	3
 License:	BSD
 Group:		X11/Applications
 Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
@@ -28,13 +28,15 @@ BuildRequires:	libtool >= 2:2.2.6
 %{?with_gnome_shell:BuildRequires:	mutter-devel >= 3.36}
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.29
-BuildRequires:	rpmbuild(macros) >= 1.673
+BuildRequires:	rpmbuild(macros) >= 2.011
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 2:0.42
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xz
+Requires(post,preun):	systemd-units >= 250.1
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	systemd-units >= 250.1
 Obsoletes:	gpaste-applet < 3.20
 Suggests:	wgetpaste >= 2.26
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -183,6 +185,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %glib_compile_schemas
+%systemd_user_post org.gnome.GPaste.service org.gnome.GPaste.Ui.service
+
+%preun
+%systemd_user_preun org.gnome.GPaste.service org.gnome.GPaste.Ui.service
 
 %postun
 %glib_compile_schemas
