@@ -34,9 +34,9 @@ BuildRequires:	vala >= 2:0.42
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xz
-Requires(post,preun):	systemd-units >= 250.1
+Requires(post,preun):	systemd-units >= 1:250.1
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	systemd-units >= 250.1
+Requires:	systemd-units >= 1:250.1
 Obsoletes:	gpaste-applet < 3.20
 Suggests:	wgetpaste >= 2.26
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
