@@ -5,12 +5,12 @@
 Summary:	Clipboard management system
 Summary(pl.UTF-8):	System zarządzania schowkiem
 Name:		gpaste
-Version:	3.36.3
-Release:	3
+Version:	3.42.10
+Release:	1
 License:	BSD
 Group:		X11/Applications
-Source0:	http://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
-# Source0-md5:	3bd71852b7a0fe9a94994698c38c91e6
+Source0:	https://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
+# Source0-md5:	31ad05a3a720d9659a49f3d810620049
 Patch0:		%{name}-sh.patch
 URL:		https://github.com/Keruspe/GPaste
 BuildRequires:	appstream-glib-devel
@@ -21,7 +21,7 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	gdk-pixbuf2-devel >= 2.38.0
 BuildRequires:	gettext-tools >= 0.19.7
 BuildRequires:	gjs-devel >= 1.54.0
-BuildRequires:	glib2-devel >= 1:2.58
+BuildRequires:	glib2-devel >= 1:2.70
 BuildRequires:	gobject-introspection-devel >= 1.58.0
 BuildRequires:	gtk+3-devel >= 3.24
 BuildRequires:	libtool >= 2:2.2.6
@@ -29,6 +29,7 @@ BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig >= 1:0.29
 BuildRequires:	rpmbuild(macros) >= 2.011
+BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 2:0.42
 BuildRequires:	xorg-lib-libX11-devel
@@ -56,7 +57,7 @@ Summary:	Library to manage the clipboard history
 Summary(pl.UTF-8):	Biblioteka do zarządzania historią schowka
 Group:		Libraries
 Requires:	gdk-pixbuf2 >= 2.38.0
-Requires:	glib2 >= 1:2.58
+Requires:	glib2 >= 1:2.70
 Requires:	gtk+3 >= 3.24
 
 %description libs
@@ -73,7 +74,7 @@ Summary(pl.UTF-8):	Pliki programistyczne biblioteki libgpaste
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	gdk-pixbuf2-devel >= 2.38.0
-Requires:	glib2-devel >= 1:2.58
+Requires:	glib2-devel >= 1:2.70
 Requires:	gtk+3-devel >= 3.24
 
 %description devel
@@ -141,6 +142,9 @@ Dopełnianie parametrów ZSH dla poleceń GPaste.
 %prep
 %setup -q
 %patch0 -p1
+
+# allow newer mutter; this is check only, no linking
+%{__sed} -i -e 's/mutter-clutter-9 //' configure.ac
 
 %build
 %{__libtoolize}
@@ -213,7 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgpaste.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.11
+%attr(755,root,root) %ghost %{_libdir}/libgpaste.so.13
 %{_libdir}/girepository-1.0/GPaste-1.0.typelib
 
 %files devel
