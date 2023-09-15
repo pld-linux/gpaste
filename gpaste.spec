@@ -6,7 +6,7 @@ Summary:	Clipboard management system
 Summary(pl.UTF-8):	System zarządzania schowkiem
 Name:		gpaste
 Version:	3.42.10
-Release:	1
+Release:	2
 License:	BSD
 Group:		X11/Applications
 Source0:	https://www.imagination-land.org/files/gpaste/%{name}-%{version}.tar.xz
@@ -175,7 +175,9 @@ cp -p data/completions/gpaste-client $RPM_BUILD_ROOT%{bash_compdir}
 install -d $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
 cp -p data/completions/_gpaste-client $RPM_BUILD_ROOT%{_datadir}/zsh/site-functions
 
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/{nb_NO,nb}
 %{__mv} $RPM_BUILD_ROOT%{_localedir}/{nl_NL,nl}
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/{zh_Hant,zh_TW}
 
 %find_lang GPaste
 
