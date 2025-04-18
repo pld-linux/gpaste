@@ -141,7 +141,7 @@ Dopełnianie parametrów ZSH dla poleceń GPaste.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 # allow newer mutter; this is check only, no linking
 %{__sed} -i -e 's/mutter-clutter-9 //' configure.ac
